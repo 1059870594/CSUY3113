@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BFEA08C626684CAF0089000F /* ctg.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFEA08C526684C6A0089000F /* ctg.png */; };
+		BFEA08C82669AA640089000F /* Geralt.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFEA08C72669AA520089000F /* Geralt.png */; };
+		BFEA08CA2669ABF90089000F /* Fireblade.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFEA08C92669ABF30089000F /* Fireblade.png */; };
+		BFEA08CD2669D4E40089000F /* Frostblade.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFEA08CC2669D4DD0089000F /* Frostblade.png */; };
 		DBDF1B532323DE3F007CECB1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBDF1B522323DE3F007CECB1 /* main.cpp */; };
 		DBDF1B5E2323DE8D007CECB1 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */; };
 		DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBDF1B5C2323DE8D007CECB1 /* shaders */; };
@@ -25,12 +29,20 @@
 			dstSubfolderSpec = 6;
 			files = (
 				DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */,
+				BFEA08CD2669D4E40089000F /* Frostblade.png in CopyFiles */,
+				BFEA08CA2669ABF90089000F /* Fireblade.png in CopyFiles */,
+				BFEA08C82669AA640089000F /* Geralt.png in CopyFiles */,
+				BFEA08C626684CAF0089000F /* ctg.png in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BFEA08C526684C6A0089000F /* ctg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctg.png; sourceTree = "<group>"; };
+		BFEA08C72669AA520089000F /* Geralt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Geralt.png; sourceTree = "<group>"; };
+		BFEA08C92669ABF30089000F /* Fireblade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fireblade.png; sourceTree = "<group>"; };
+		BFEA08CC2669D4DD0089000F /* Frostblade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Frostblade.png; sourceTree = "<group>"; };
 		DBDF1B4F2323DE3F007CECB1 /* SDLProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SDLProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDF1B522323DE3F007CECB1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DBDF1B592323DE8D007CECB1 /* ShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgram.h; sourceTree = "<group>"; };
@@ -81,6 +93,10 @@
 		DBDF1B512323DE3F007CECB1 /* SDLProject */ = {
 			isa = PBXGroup;
 			children = (
+				BFEA08CC2669D4DD0089000F /* Frostblade.png */,
+				BFEA08C92669ABF30089000F /* Fireblade.png */,
+				BFEA08C72669AA520089000F /* Geralt.png */,
+				BFEA08C526684C6A0089000F /* ctg.png */,
 				DBDF1B5B2323DE8D007CECB1 /* glm */,
 				DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */,
 				DBDF1B592323DE8D007CECB1 /* ShaderProgram.h */,
