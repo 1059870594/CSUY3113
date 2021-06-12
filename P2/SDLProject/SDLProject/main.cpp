@@ -22,32 +22,15 @@ glm::mat4 viewMatrix, paddleOneMatrix, paddleTwoMatrix, ballMatrix, projectionMa
 
 glm::vec3 paddleOne_position = glm::vec3(0,0,0);
 glm::vec3 paddleOne_movement = glm::vec3(0,0,0);
-float paddleOne_speed = 1.0f;
+float paddleOne_speed = 0.0f;
 
 glm::vec3 paddleTwo_position = glm::vec3(0,0,0);
 glm::vec3 paddleTwo_movement = glm::vec3(0,0,0);
-float paddleTwo_speed = 1.0f;
+float paddleTwo_speed = 0.0f;
 
-float ball_x, ball_y; //keep track of the ball's position
-
-GLuint playerTextureID, swordTextureID;
-
-GLuint LoadTexture(const char* filePath) {
-    int w, h, n;
-    unsigned char* image = stbi_load(filePath, &w, &h, &n, STBI_rgb_alpha);
-    if (image == NULL) {
-        std::cout << "Unable to load image. Make sure the path is correct\n";
-        assert(false);
-    }
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    stbi_image_free(image);
-    return textureID;
-}
+glm::vec3 ball_position = glm::vec3(0,0,0);
+float ball_x_direction = 0.0f;
+float ball_y_direction = 0.0f;
 
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -61,7 +44,7 @@ void Initialize() {
     
     glViewport(0, 0, 640, 480);
     
-    program.Load("shaders/vertex.glsl", "shaders/fragment.glsl"); //change to texture folder
+    program.Load("shaders/vertex.glsl", "shaders/fragment.glsl");
     
     viewMatrix = glm::mat4(1.0f);
     paddleOneMatrix = glm::mat4(1.0f);
@@ -75,9 +58,11 @@ void Initialize() {
      
     glUseProgram(program.programID);
     
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f); //This object has a black background
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f); 
     
 }
+
+int space_press_time = 0;
 
 void ProcessInput() {
     paddleOne_movement = glm::vec3(0);
@@ -97,7 +82,18 @@ void ProcessInput() {
                     case SDLK_RIGHT:
                         break;
                     case SDLK_SPACE:
-                        break;
+                        space_press_time += 1;
+                        if(space_press_time == 1){
+                            paddleOne_speed = 2.0f;
+                            paddleTwo_speed = 2.0f;
+                            ball_x_direction = 1.0f;
+                            ball_y_direction = 1.0f;
+                        }else{//hit space more than once ends the game
+                            ball_x_direction = 0.0f;
+                            ball_y_direction = 0.0f;
+                            paddleOne_speed = 0.0f;
+                            paddleTwo_speed = 0.0f;
+                        }
                 }
                 break;
         }
@@ -121,29 +117,68 @@ void ProcessInput() {
 
 float lastTicks = 0.0f;
 
-void Update() {
-    float ticks = (float)SDL_GetTicks() / 1000.0f; //getTicks gives you the amount of ms since you initilized SDL
-    float deltaTime = ticks - lastTicks; //calculate how much time gone by since last frame
-    lastTicks = ticks;
-    
-    paddleOne_position += paddleOne_speed * paddleOne_movement * deltaTime; //make sure you have this variable, update each time
-    paddleTwo_position += paddleTwo_speed * paddleTwo_movement * deltaTime; //it seems that this postion refers to the center of rectangle
-    ball_x += 1.0f * deltaTime;
-    ball_y += 1.0f * deltaTime;
-    
+void paddle_work_correctly(){
     if(paddleOne_position.y > 3.00f){ //the edge of the rectangle touches the window at 3, -3; if set to > 3.75f, half of the renctangle would disappear
         paddleOne_position.y = 3.00f;
     }
-    if(paddleOne_position.y < -3.00f){
+    else if(paddleOne_position.y < -3.00f){
         paddleOne_position.y = -3.00f;
     }
     
     if(paddleTwo_position.y > 3.00f){
         paddleTwo_position.y = 3.00f;
     }
-    if(paddleTwo_position.y < -3.00f){
+    else if(paddleTwo_position.y < -3.00f){
         paddleTwo_position.y = -3.00f;
     }
+}
+
+void ball_work_correctly(){
+    if(ball_position.x >= 4.8f or ball_position.x <= -4.8f){//game over
+        ball_y_direction = 0.0f;
+        ball_x_direction = 0.0f;
+        paddleOne_speed = 0.0f;
+        paddleTwo_speed = 0.0f;
+    }else{//games continues
+        if(ball_position.y >= 3.55f){//hit the top from the left or right, ball needs to bounce down
+            ball_position.y = 3.55f;
+            ball_y_direction = -1.0f;
+        }
+        else if(ball_position.y <= -3.55f){//hit the bot from the left or right, ball needs to bounce up
+            ball_position.y = -3.55f;
+            ball_y_direction = 1.0f;
+        }
+        //need to cap the y position of the ball within -3.55 to 3.55
+        
+        float xdist_right = fabs(4.875f - ball_position.x) - ((0.4+0.25)/2.0f);
+        float ydist_right = fabs(paddleTwo_position.y - ball_position.y) - ((0.4+1.5)/2.0f);
+        float xdist_left = fabs(-4.875f - ball_position.x) - ((0.4+0.25)/2.0f);
+        float ydist_left = fabs(paddleOne_position.y - ball_position.y) - ((0.4+1.5)/2.0f);
+        
+        //4.875f is the actual x position of paddleOne
+        //std::cout << "x: " << paddleOne_position.x << std::endl; why these x position = 0?
+        
+        if(ball_x_direction > 0.0f && (xdist_right < 0 && ydist_right < 0)){//hit right paddle
+            ball_x_direction = -1.0f;
+        }
+        else if(ball_x_direction < 0.0f && (xdist_left < 0 && ydist_left < 0)){//hit left paddle
+            ball_x_direction = 1.0f;
+        }
+    }
+}
+
+void Update() {
+    float ticks = (float)SDL_GetTicks() / 1000.0f; //getTicks gives you the amount of ms since you initilized SDL
+    float deltaTime = ticks - lastTicks; //calculate how much time gone by since last frame
+    lastTicks = ticks;
+    
+    paddleOne_position += paddleOne_speed * paddleOne_movement * deltaTime;
+    paddleTwo_position += paddleTwo_speed * paddleTwo_movement * deltaTime; //it seems that this postion refers to the center of rectangle
+    ball_position.x += ball_x_direction * 2.0f * deltaTime;
+    ball_position.y += ball_y_direction * 2.0f * deltaTime;
+    
+    paddle_work_correctly();
+    ball_work_correctly();
     
     paddleOneMatrix = glm::mat4(1.0f);
     paddleOneMatrix = glm::translate(paddleOneMatrix, paddleOne_position);
@@ -152,17 +187,14 @@ void Update() {
     paddleTwoMatrix = glm::translate(paddleTwoMatrix, paddleTwo_position);
     
     ballMatrix = glm::mat4(1.0f);
-    ballMatrix = glm::translate(ballMatrix, glm::vec3(ball_x, ball_y, 0.0f));
+    ballMatrix = glm::translate(ballMatrix, ball_position);
 }
 
 void Render(){
     glClear(GL_COLOR_BUFFER_BIT);
     
-    //float vertices[]  = {0.5f, -0.5f, 0.0f, 0.5f, -0.5f, -0.5f};
-    
-    //glVertexAttribPointer(program.positionAttribute, 2, GL_FLOAT, false, 0, vertices);
     glEnableVertexAttribArray(program.positionAttribute);
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
+    
     program.SetModelMatrix(paddleOneMatrix);
     glRectf(-5.0f,0.75f,-4.75f,-0.75f);
     
