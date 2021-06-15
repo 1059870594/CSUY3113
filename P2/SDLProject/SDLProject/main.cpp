@@ -193,18 +193,19 @@ void Update() {
 void Render(){
     glClear(GL_COLOR_BUFFER_BIT);
     
-    glEnableVertexAttribArray(program.positionAttribute);
-    
     program.SetModelMatrix(paddleOneMatrix);
+    program.SetColor(1.0f, 0.0f, 0.0f, 0.0f);
     glRectf(-5.0f,0.75f,-4.75f,-0.75f);
-    
+
     program.SetModelMatrix(paddleTwoMatrix);
+    program.SetColor(1.0f, 0.0f, 0.0f, 0.0f);
     glRectf(4.75f,0.75f,5.0f,-0.75f);
-    
+
     program.SetModelMatrix(ballMatrix);
+    program.SetColor(0.5f, 0.5f, 0.5f, 0.0f);
     glRectf(-0.2f, 0.2f, 0.2f, -0.2f);
-    
-    glDisableVertexAttribArray(program.positionAttribute);
+
+    //glDisableVertexAttribArray(program.positionAttribute);
     
     SDL_GL_SwapWindow(displayWindow);
 }
