@@ -50,9 +50,6 @@ GLuint LoadTexture(const char* filePath) {
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
     
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -104,7 +101,7 @@ void DrawText(ShaderProgram *program, GLuint fontTextureID, std::string text, fl
 
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO);
-    displayWindow = SDL_CreateWindow("Textured!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+    displayWindow = SDL_CreateWindow("Lunar Explorer!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
     
@@ -138,32 +135,12 @@ void Initialize() {
     fontTextureID = LoadTexture("font1.png");
     
     state.player = new Entity();
-    state.player->position = glm::vec3(3.5f, 3.55f, 0);
+    state.player->position = glm::vec3(3.0f, 3.55f, 0);
     state.player->movement = glm::vec3(0);
     state.player->acceleration = glm::vec3(0,-0.02f,0);
     state.player->speed = 1.5f;
-    state.player->textureID = LoadTexture("spaceship2.png");
+    state.player->textureID = LoadTexture("spaceship4.png");
     state.player->entityType = player;
-    
-    /*
-    state.player->animRight = new int[4] {3, 7, 11, 15};
-    state.player->animLeft = new int[4] {1, 5, 9, 13};
-    state.player->animUp = new int[4] {2, 6, 10, 14};
-    state.player->animDown = new int[4] {0, 4, 8, 12};
-    
-
-    state.player->animIndices = state.player->animRight;
-    state.player->animFrames = 4;
-    state.player->animIndex = 0;
-    state.player->animTime = 0;
-    state.player->animCols = 4;
-    state.player->animRows = 4;
-     
-     */
-    
-    state.player->height = 0.8f;
-    state.player->width = 0.7f;
-    state.player->jumpPower = 5.0f;
     
     state.platforms = new Entity[PLATFORM_COUNT];
     GLuint platformTextureID = LoadTexture("platformPack_tile040.png");
@@ -243,11 +220,6 @@ void ProcessInput() {
                         break;
                         
                     case SDLK_SPACE:
-                        /*
-                        if(state.player->collidedBottom){
-                            state.player->jump = true;
-                        }
-                        */
                         break;
                 }
                 break; // SDL_KEYDOWN
@@ -257,14 +229,10 @@ void ProcessInput() {
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
 
     if (keys[SDL_SCANCODE_LEFT]) {
-        //state.player->movement.x = -1.0f;
         state.player->acceleration.x -= 1.0f;
-        //state.player->animIndices = state.player->animLeft;
     }
     else if (keys[SDL_SCANCODE_RIGHT]) {
-        //state.player->movement.x = 1.0f;
         state.player->acceleration.x += 1.0f;
-        //state.player->animIndices = state.player->animRight;
     }
     
 

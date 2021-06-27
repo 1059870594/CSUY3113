@@ -21,29 +21,14 @@ public:
     glm::vec3 velocity;
     float width = 1;
     float height = 1;
-    bool jump = false;
-    float jumpPower = 0;
     float speed;
+    
     EntityType entityType;
     EntityType lastCollison;
     
     GLuint textureID;
     
     glm::mat4 modelMatrix;
-    
-    /*
-    int *animRight = NULL;
-    int *animLeft = NULL;
-    int *animUp = NULL;
-    int *animDown = NULL;
-
-    int *animIndices = NULL;
-    int animFrames = 0;
-    int animIndex = 0;
-    float animTime = 0;
-    int animCols = 0;
-    int animRows = 0;
-    */
     
     bool isActive = true;
     bool collidedTop = false;
@@ -58,5 +43,4 @@ public:
     void CheckCollisonsX(Entity *objects, int objectCount);
     void Update(float deltaTime, Entity *platforms, Entity *safePlatforms, int platformCount, int safePlatformCount);
     void Render(ShaderProgram *program);
-    void DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID, int index);
 };

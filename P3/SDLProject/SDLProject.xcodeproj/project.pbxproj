@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF30485D2689326400CF8434 /* spaceship3.jpg in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF30485C2689325200CF8434 /* spaceship3.jpg */; };
+		BF30485F2689341C00CF8434 /* spaceship4.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF30485E2689341200CF8434 /* spaceship4.png */; };
 		BF7B8C582688E8A500C80BA7 /* spaceship.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF7B8C572688E89D00C80BA7 /* spaceship.png */; };
 		BF7B8C5A2688EFC000C80BA7 /* spaceship2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF7B8C592688EFB100C80BA7 /* spaceship2.png */; };
 		BF9DCBD726844D6000A7F42B /* platformPack_tile040.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF9DCBD626844D5300A7F42B /* platformPack_tile040.png */; };
@@ -32,6 +34,8 @@
 			dstSubfolderSpec = 6;
 			files = (
 				DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */,
+				BF30485F2689341C00CF8434 /* spaceship4.png in CopyFiles */,
+				BF30485D2689326400CF8434 /* spaceship3.jpg in CopyFiles */,
 				BF7B8C5A2688EFC000C80BA7 /* spaceship2.png in CopyFiles */,
 				BF7B8C582688E8A500C80BA7 /* spaceship.png in CopyFiles */,
 				BF9DCBDF26869EF900A7F42B /* font1.png in CopyFiles */,
@@ -44,6 +48,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF30485C2689325200CF8434 /* spaceship3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = spaceship3.jpg; sourceTree = "<group>"; };
+		BF30485E2689341200CF8434 /* spaceship4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spaceship4.png; sourceTree = "<group>"; };
 		BF7B8C572688E89D00C80BA7 /* spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spaceship.png; sourceTree = "<group>"; };
 		BF7B8C592688EFB100C80BA7 /* spaceship2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spaceship2.png; sourceTree = "<group>"; };
 		BF9DCBD526844CFB00A7F42B /* george_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = george_0.png; sourceTree = "<group>"; };
@@ -107,6 +113,8 @@
 				BF7B8C592688EFB100C80BA7 /* spaceship2.png */,
 				BF9DCBDC26854E8C00A7F42B /* platformPack_tile038.png */,
 				BF7B8C572688E89D00C80BA7 /* spaceship.png */,
+				BF30485E2689341200CF8434 /* spaceship4.png */,
+				BF30485C2689325200CF8434 /* spaceship3.jpg */,
 				BF9DCBD626844D5300A7F42B /* platformPack_tile040.png */,
 				DBDF1B5B2323DE8D007CECB1 /* glm */,
 				DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */,
