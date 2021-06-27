@@ -50,8 +50,9 @@ GLuint LoadTexture(const char* filePath) {
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
     
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -125,8 +126,8 @@ void Initialize() {
     glUseProgram(program.programID);
     
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    
     glEnable(GL_BLEND);
-
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
    
@@ -139,15 +140,17 @@ void Initialize() {
     state.player = new Entity();
     state.player->position = glm::vec3(3.5f, 3.55f, 0);
     state.player->movement = glm::vec3(0);
-    state.player->acceleration = glm::vec3(0,-0.2f,0);
+    state.player->acceleration = glm::vec3(0,-0.02f,0);
     state.player->speed = 1.5f;
-    state.player->textureID = LoadTexture("george_0.png");
+    state.player->textureID = LoadTexture("spaceship2.png");
     state.player->entityType = player;
     
+    /*
     state.player->animRight = new int[4] {3, 7, 11, 15};
     state.player->animLeft = new int[4] {1, 5, 9, 13};
     state.player->animUp = new int[4] {2, 6, 10, 14};
     state.player->animDown = new int[4] {0, 4, 8, 12};
+    
 
     state.player->animIndices = state.player->animRight;
     state.player->animFrames = 4;
@@ -155,9 +158,11 @@ void Initialize() {
     state.player->animTime = 0;
     state.player->animCols = 4;
     state.player->animRows = 4;
+     
+     */
     
     state.player->height = 0.8f;
-    state.player->width = 0.65f;
+    state.player->width = 0.7f;
     state.player->jumpPower = 5.0f;
     
     state.platforms = new Entity[PLATFORM_COUNT];
@@ -253,13 +258,13 @@ void ProcessInput() {
 
     if (keys[SDL_SCANCODE_LEFT]) {
         //state.player->movement.x = -1.0f;
-        state.player->acceleration = glm::vec3(-1.0f, -0.2f, 0);
-        state.player->animIndices = state.player->animLeft;
+        state.player->acceleration.x -= 1.0f;
+        //state.player->animIndices = state.player->animLeft;
     }
     else if (keys[SDL_SCANCODE_RIGHT]) {
         //state.player->movement.x = 1.0f;
-        state.player->acceleration = glm::vec3(1.0f, -0.2f, 0);
-        state.player->animIndices = state.player->animRight;
+        state.player->acceleration.x += 1.0f;
+        //state.player->animIndices = state.player->animRight;
     }
     
 

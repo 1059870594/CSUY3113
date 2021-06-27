@@ -72,6 +72,7 @@ void Entity::Update(float deltaTime, Entity *platforms, Entity *safePlatforms, i
     //collidedLeft = false;
     //collidedRight = false;
     
+    /*
     if (animIndices != NULL) {
         if (glm::length(movement) != 0) {
             animTime += deltaTime;
@@ -94,12 +95,13 @@ void Entity::Update(float deltaTime, Entity *platforms, Entity *safePlatforms, i
         jump = false;
         velocity.y += jumpPower;
     }
+    */
     
     if(collidedLeft || collidedRight || collidedBottom) return;
     
-    //velocity.x = movement.x * speed;
-    velocity.x = acceleration.x * speed;
-    velocity.y = acceleration.y * speed;
+    velocity.x = movement.x * speed;
+    //velocity.x = acceleration.x * speed;
+    //velocity.y = acceleration.y * speed;
     velocity += acceleration * deltaTime;
     
     position.y += velocity.y * deltaTime;       // Move on Y
@@ -114,6 +116,7 @@ void Entity::Update(float deltaTime, Entity *platforms, Entity *safePlatforms, i
     modelMatrix = glm::translate(modelMatrix, position);
 }
 
+/*
 void Entity::DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID, int index)
 {
     float u = (float)(index % animCols) / (float)animCols;
@@ -140,6 +143,7 @@ void Entity::DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID
     glDisableVertexAttribArray(program->positionAttribute);
     glDisableVertexAttribArray(program->texCoordAttribute);
 }
+*/
 
 void Entity::Render(ShaderProgram *program) {
     
@@ -147,10 +151,12 @@ void Entity::Render(ShaderProgram *program) {
     
     program->SetModelMatrix(modelMatrix);
     
+    /*
     if (animIndices != NULL) {
         DrawSpriteFromTextureAtlas(program, textureID, animIndices[animIndex]);
         return;
     }
+    */
     
     float vertices[]  = { -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5 };
     float texCoords[] = { 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0 };

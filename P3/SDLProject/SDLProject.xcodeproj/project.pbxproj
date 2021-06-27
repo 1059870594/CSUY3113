@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF7B8C582688E8A500C80BA7 /* spaceship.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF7B8C572688E89D00C80BA7 /* spaceship.png */; };
+		BF7B8C5A2688EFC000C80BA7 /* spaceship2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF7B8C592688EFB100C80BA7 /* spaceship2.png */; };
 		BF9DCBD726844D6000A7F42B /* platformPack_tile040.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF9DCBD626844D5300A7F42B /* platformPack_tile040.png */; };
 		BF9DCBD826844D6300A7F42B /* george_0.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF9DCBD526844CFB00A7F42B /* george_0.png */; };
 		BF9DCBDB2684EB8500A7F42B /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF9DCBD92684EB8500A7F42B /* Entity.cpp */; };
@@ -30,6 +32,8 @@
 			dstSubfolderSpec = 6;
 			files = (
 				DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */,
+				BF7B8C5A2688EFC000C80BA7 /* spaceship2.png in CopyFiles */,
+				BF7B8C582688E8A500C80BA7 /* spaceship.png in CopyFiles */,
 				BF9DCBDF26869EF900A7F42B /* font1.png in CopyFiles */,
 				BF9DCBDD26854FDC00A7F42B /* platformPack_tile038.png in CopyFiles */,
 				BF9DCBD826844D6300A7F42B /* george_0.png in CopyFiles */,
@@ -40,6 +44,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF7B8C572688E89D00C80BA7 /* spaceship.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spaceship.png; sourceTree = "<group>"; };
+		BF7B8C592688EFB100C80BA7 /* spaceship2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spaceship2.png; sourceTree = "<group>"; };
 		BF9DCBD526844CFB00A7F42B /* george_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = george_0.png; sourceTree = "<group>"; };
 		BF9DCBD626844D5300A7F42B /* platformPack_tile040.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile040.png; sourceTree = "<group>"; };
 		BF9DCBD92684EB8500A7F42B /* Entity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
@@ -98,7 +104,9 @@
 			children = (
 				BF9DCBDE26864ACA00A7F42B /* font1.png */,
 				BF9DCBD526844CFB00A7F42B /* george_0.png */,
+				BF7B8C592688EFB100C80BA7 /* spaceship2.png */,
 				BF9DCBDC26854E8C00A7F42B /* platformPack_tile038.png */,
+				BF7B8C572688E89D00C80BA7 /* spaceship.png */,
 				BF9DCBD626844D5300A7F42B /* platformPack_tile040.png */,
 				DBDF1B5B2323DE8D007CECB1 /* glm */,
 				DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */,
