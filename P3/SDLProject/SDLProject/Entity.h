@@ -54,7 +54,7 @@ public:
     bool CheckCollison(Entity *other);
     void CheckCollisonsY(Entity *objects, int objectCount);
     void CheckCollisonsX(Entity *objects, int objectCount);
-    void Update(float deltaTime, Entity *platforms, int platformCount);
+    void Update(float deltaTime, Entity *platforms, Entity *safePlatforms, int platformCount, int safePlatformCount);
     void Render(ShaderProgram *program);
     void DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID, int index);
 };

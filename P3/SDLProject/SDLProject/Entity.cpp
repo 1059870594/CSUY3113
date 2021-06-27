@@ -63,14 +63,14 @@ void Entity::CheckCollisonsX(Entity *objects, int objectCount){//x direction col
    }
 }
 
-void Entity::Update(float deltaTime, Entity *platforms, int platformCount)
+void Entity::Update(float deltaTime, Entity *platforms, Entity *safePlatforms, int platformCount, int safePlatformCount)
 {
     if(isActive == false) return;
     
-    collidedTop = false;
-    collidedBottom = false;
-    collidedLeft = false;
-    collidedRight = false;
+    //collidedTop = false;
+    //collidedBottom = false;
+    //collidedLeft = false;
+    //collidedRight = false;
     
     if (animIndices != NULL) {
         if (glm::length(movement) != 0) {
@@ -95,14 +95,20 @@ void Entity::Update(float deltaTime, Entity *platforms, int platformCount)
         velocity.y += jumpPower;
     }
     
-    velocity.x = movement.x * speed;
+    if(collidedLeft || collidedRight || collidedBottom) return;
+    
+    //velocity.x = movement.x * speed;
+    velocity.x = acceleration.x * speed;
+    velocity.y = acceleration.y * speed;
     velocity += acceleration * deltaTime;
     
     position.y += velocity.y * deltaTime;       // Move on Y
     CheckCollisonsY(platforms, platformCount);  // Fix if needed
+    CheckCollisonsY(safePlatforms, safePlatformCount);
     
     position.x += velocity.x * deltaTime;       // Move on X
     CheckCollisonsX(platforms, platformCount);  // Fix if needed
+    CheckCollisonsX(safePlatforms, safePlatformCount);
     
     modelMatrix = glm::mat4(1.0f);
     modelMatrix = glm::translate(modelMatrix, position);

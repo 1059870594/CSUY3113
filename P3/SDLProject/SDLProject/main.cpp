@@ -34,6 +34,8 @@ bool gameIsRunning = true;
 ShaderProgram program;
 glm::mat4 viewMatrix, modelMatrix, projectionMatrix;
 
+GLuint fontTextureID;
+
 GLuint LoadTexture(const char* filePath) {
     int w, h, n;
     unsigned char* image = stbi_load(filePath, &w, &h, &n, STBI_rgb_alpha);
@@ -99,7 +101,6 @@ void DrawText(ShaderProgram *program, GLuint fontTextureID, std::string text, fl
     glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
-
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO);
     displayWindow = SDL_CreateWindow("Textured!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
@@ -133,6 +134,8 @@ void Initialize() {
     
     // Initialize Player
     
+    fontTextureID = LoadTexture("font1.png");
+    
     state.player = new Entity();
     state.player->position = glm::vec3(3.5f, 3.55f, 0);
     state.player->movement = glm::vec3(0);
@@ -156,9 +159,6 @@ void Initialize() {
     state.player->height = 0.8f;
     state.player->width = 0.65f;
     state.player->jumpPower = 5.0f;
-    
-    state.font = new Entity();
-    state.font->textureID = LoadTexture("font1.png");
     
     state.platforms = new Entity[PLATFORM_COUNT];
     GLuint platformTextureID = LoadTexture("platformPack_tile040.png");
@@ -206,15 +206,13 @@ void Initialize() {
     state.safePlatforms[1].position = glm::vec3(-0.5f, -3.25f, 0);
     
     for(size_t i = 0; i < PLATFORM_COUNT; i++){
-        state.platforms[i].Update(0, NULL, 0);
+        state.platforms[i].Update(0, NULL, NULL,0, 0);
     }
     
     for(size_t i = 0; i < SAFEPLATFORM_COUNT; i++){
-        state.safePlatforms[i].Update(0, NULL, 0);
+        state.safePlatforms[i].Update(0, NULL, NULL,0, 0);
         state.safePlatforms[i].entityType = safePlatforms;
     }
-    
- 
 }
 
 void ProcessInput() {
@@ -254,11 +252,13 @@ void ProcessInput() {
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
 
     if (keys[SDL_SCANCODE_LEFT]) {
-        state.player->movement.x = -1.0f;
+        //state.player->movement.x = -1.0f;
+        state.player->acceleration = glm::vec3(-1.0f, -0.2f, 0);
         state.player->animIndices = state.player->animLeft;
     }
     else if (keys[SDL_SCANCODE_RIGHT]) {
-        state.player->movement.x = 1.0f;
+        //state.player->movement.x = 1.0f;
+        state.player->acceleration = glm::vec3(1.0f, -0.2f, 0);
         state.player->animIndices = state.player->animRight;
     }
     
@@ -287,8 +287,7 @@ void Update() {
    
     while (deltaTime >= FIXED_TIMESTEP) {
        // Update. Notice it's FIXED_TIMESTEP. Not deltaTime
-       state.player->Update(FIXED_TIMESTEP, state.platforms, PLATFORM_COUNT); //check player hits platform
-        state.player->Update(FIXED_TIMESTEP, state.safePlatforms, SAFEPLATFORM_COUNT);
+        state.player->Update(FIXED_TIMESTEP, state.platforms, state.safePlatforms, PLATFORM_COUNT, SAFEPLATFORM_COUNT); //check player hits platform
        deltaTime -= FIXED_TIMESTEP;
     }
     accumulator = deltaTime;
@@ -308,15 +307,12 @@ void Render() {
     
     state.player->Render(&program);
     
-    if(state.player->collidedBottom){
-        if(state.player->lastCollison == safePlatforms){
-            state.player->speed = 0;
-            DrawText(&program, state.font->textureID, "Mission Successful!", 0.5f, -0.25f, glm::vec3(-4.75f, 3.3, 0));
-        }else{
-            state.player->speed = 0;
-            DrawText(&program, state.font->textureID, "Mission Failed!", 0.5f, -0.25f, glm::vec3(-4.75f, 3.3, 0));
-        }
+    if(state.player->lastCollison == safePlatforms){
+        DrawText(&program, fontTextureID, "Mission Successful!", 0.5f, -0.25f, glm::vec3(-4.75f, 3.3, 0));
+    }else if(state.player->lastCollison == platforms){
+        DrawText(&program, fontTextureID, "Mission Failed!", 0.5f, -0.25f, glm::vec3(-4.75f, 3.3, 0));
     }
+    
     
     SDL_GL_SwapWindow(displayWindow);
 }
