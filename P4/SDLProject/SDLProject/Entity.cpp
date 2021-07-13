@@ -19,7 +19,10 @@ bool Entity::CheckCollison(Entity *other){
     
     float xdist = fabs(position.x - other->position.x) - ((width + other->width) / 2.0f);
     float ydist = fabs(position.y - other->position.y) - ((height + other->height) / 2.0f);
-    if(xdist < 0 && ydist < 0) return true;
+    if(xdist < 0 && ydist < 0) {
+        lastCollison = other->entityType;
+        return true;
+    }
     return false;
 }
 
@@ -30,13 +33,22 @@ void Entity::CheckCollisonsY(Entity *objects, int objectCount){
            float ydist = fabs(position.y - object->position.y);
            float penetrationY = fabs(ydist - (height / 2.0f) - (object->height / 2.0f));
            if (velocity.y > 0) {
-               position.y -= penetrationY;
-               velocity.y = 0;
-               collidedTop = true;
+               if(objects[i].entityType != ENEMY){
+                   position.y -= penetrationY;
+                   velocity.y = 0;
+                   collidedTop = true;
+               }else{
+                   collidedETop = true;
+               }
            }else if (velocity.y < 0) {
-               position.y += penetrationY;
-               velocity.y = 0;
-               collidedBottom = true;
+               if(objects[i].entityType != ENEMY){
+                   position.y += penetrationY;
+                   velocity.y = 0;
+                   collidedBottom = true;
+               }else{
+                   collidedEBottom = true;
+                   objects[i].isActive = false;
+               }
            }
        }
    }
@@ -48,23 +60,30 @@ void Entity::CheckCollisonsX(Entity *objects, int objectCount){//x direction col
             if (CheckCollison(object)){
                 float xdist = fabs(position.x - object->position.x);
                 float penetrationX = fabs(xdist - (width / 2.0f) - (object->width / 2.0f));
-                if (velocity.x > 0) {
-                    position.x -= penetrationX;
-                    velocity.x = 0;
-                    collidedRight = true;
+                if (velocity.x > 0) { //dont need to adjust position if colliding with enemies
+                    if(objects[i].entityType != ENEMY){
+                        position.x -= penetrationX;
+                        velocity.x = 0;
+                        collidedRight = true;
+                    }else{
+                        collidedERight = true;
+                    }
                 }
                 else if (velocity.x < 0) {
-                    position.x += penetrationX;
-                    velocity.x = 0;
-                    collidedLeft = true;
-                    //std::cout << collidedLeft;
+                    if(objects[i].entityType != ENEMY){
+                        position.x += penetrationX;
+                        velocity.x = 0;
+                        collidedLeft = true;
+                    }else{
+                        collidedELeft = true;
+                    }
                 }
             }
         }
 }
 
 void Entity::AIWalker(Entity* player){ //needs an input to know the relative position of player
-    if(player->position.x < position.x){
+    if(player->position.x < position.x && position.x >= -3.25){
         movement = glm::vec3(-1, 0 , 0);  //walks to left depends on where player is
     }else{
         movement = glm::vec3(1, 0 , 0); //walks to right
@@ -72,23 +91,19 @@ void Entity::AIWalker(Entity* player){ //needs an input to know the relative pos
 }
 
 void Entity::AIPatroller(Entity* player, Entity* platforms, int platformCount){ //needs an input to know the relative position of player
-    movement = glm::vec3(-1, 0 , 0);
-    CheckCollisonsX(platforms, platformCount);
-    //std::cout << collidedLeft;
-    if(collidedLeft){
-        movement = glm::vec3(1, 0 , 0);  //walks to left depends on where player is
-    }else if(collidedRight){
-        movement = glm::vec3(-1, 0 , 0); //walks to right
-    }else{
-        movement = glm::vec3(-1, 0 , 0);
+    if(position.x <= 1.4f){
+        movement = glm::vec3(1,0,0);
+    }else if(position.x >= 3.55f){
+        movement = glm::vec3(-1,0,0);
     }
 }
 
 void Entity::AIJumper(Entity* player){ //needs an input to know the relative position of player
-    if(player->position.x < position.x){
-        movement = glm::vec3(-1, 0 , 0);  //walks to left depends on where player is
-    }else{
-        movement = glm::vec3(1, 0 , 0); //walks to right
+    if(position.y <= 2.5f){
+        velocity.y = 0.5f;
+    }
+    if(position.y >= 3.0f){
+        velocity.y = -0.5f;
     }
 }
 
@@ -116,9 +131,9 @@ void Entity::Update(float deltaTime, Entity* player, Entity *platforms, int plat
     collidedBottom = false;
     collidedLeft = false;
     collidedRight = false;
+    collidedEBottom = false;
     
     if(entityType == ENEMY){ //if its an enemy, use AI to process
-        //AI(player);
         AI(player, platforms, platformCount);
     }
     
@@ -149,10 +164,19 @@ void Entity::Update(float deltaTime, Entity* player, Entity *platforms, int plat
     velocity += acceleration * deltaTime;
     
     position.y += velocity.y * deltaTime;       // Move on Y
-    CheckCollisonsY(platforms, platformCount);  // Fix if needed
+    if(aiType != PATROLLER){
+        CheckCollisonsY(platforms, platformCount);  // Fix if needed
+    }
     
     position.x += velocity.x * deltaTime;       // Move on X
-    CheckCollisonsX(platforms, platformCount);  // Fix if needed
+    if(aiType != PATROLLER){
+        CheckCollisonsX(platforms, platformCount);  // Fix if needed
+    }
+    
+    if(entityType == PLAYER){
+        CheckCollisonsY(enemies, enemyCount);
+        CheckCollisonsX(enemies, enemyCount);
+    }
     
     modelMatrix = glm::mat4(1.0f);
     modelMatrix = glm::translate(modelMatrix, position);

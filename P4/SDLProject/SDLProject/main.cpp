@@ -13,15 +13,19 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include <vector>
 
 #include "Entity.h"
-#define PLATFORM_COUNT 29
-#define ENEMY_COUNT 2
+#define PLATFORM_COUNT 38
+#define ENEMY_COUNT 3
+
+GLuint fontTextureID;
 
 struct GameState {
     Entity *player;
     Entity *platforms;
     Entity *enemies;
+    Entity *destination;
 };
 
 GameState state;
@@ -53,6 +57,47 @@ GLuint LoadTexture(const char* filePath) {
     return textureID;
 }
 
+void DrawText(ShaderProgram *program, GLuint fontTextureID, std::string text, float size, float spacing, glm::vec3 position){
+    float width = 1.0f / 16.0f;
+    float height = 1.0f / 16.0f;
+    std::vector<float> vertices;
+    std::vector<float> texCoords;
+    for(int i = 0; i < text.size(); i++) {
+        int index = (int)text[i];
+        float offset = (size + spacing) * i;
+        float u = (float)(index % 16) / 16.0f;
+        float v = (float)(index / 16) / 16.0f;
+        vertices.insert(vertices.end(), {
+                offset + (-0.5f * size), 0.5f * size,
+                offset + (-0.5f * size), -0.5f * size,
+                offset + (0.5f * size), 0.5f * size,
+                offset + (0.5f * size), -0.5f * size,
+                offset + (0.5f * size), 0.5f * size,
+                offset + (-0.5f * size), -0.5f * size,
+        });
+            texCoords.insert(texCoords.end(), {
+                u, v,
+                u, v + height,
+                u + width, v,
+                u + width, v + height,
+                u + width, v,
+                u, v + height,
+            });
+        } // end of for loop
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    modelMatrix = glm::translate(modelMatrix, position);
+    program->SetModelMatrix(modelMatrix);
+    glUseProgram(program->programID);
+    glVertexAttribPointer(program->positionAttribute, 2, GL_FLOAT, false, 0, vertices.data());
+    glEnableVertexAttribArray(program->positionAttribute);
+    glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords.data());
+    glEnableVertexAttribArray(program->texCoordAttribute);
+    glBindTexture(GL_TEXTURE_2D, fontTextureID);
+    glDrawArrays(GL_TRIANGLES, 0, (int)(text.size() * 6));
+    glDisableVertexAttribArray(program->positionAttribute);
+    glDisableVertexAttribArray(program->texCoordAttribute);
+}
+
 
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO);
@@ -82,7 +127,7 @@ void Initialize() {
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
-   
+    fontTextureID = LoadTexture("font1.png");
     // Initialize Game Objects
     
     // Initialize Player
@@ -108,39 +153,48 @@ void Initialize() {
     
     state.player->height = 0.8f;
     state.player->width = 0.6f;
-    state.player->jumpPower = 7.0f;
+    state.player->jumpPower = 6.0f;
     
     state.platforms = new Entity[PLATFORM_COUNT];
     GLuint platformTextureID = LoadTexture("platformPack_tile001.png");
     
-    for(int i = 0; i < 11; i++){//initiliaize all the platforms using for loop
+    for(int i = 0; i < PLATFORM_COUNT; i++){//initiliaize all the platforms using for loop
         state.platforms[i].entityType = PLATFORM;
         state.platforms[i].textureID = platformTextureID;
+    }
+    
+    for(int i = 0; i < 11; i++){//initiliaize all the platforms using for loop
         state.platforms[i].position = glm::vec3(-5 + i, -3.25f, 0);
     }
     
     for(int i = 11; i < 21; i++){//initiliaize all the platforms using for loop
-        state.platforms[i].entityType = PLATFORM;
-        state.platforms[i].textureID = platformTextureID;
         state.platforms[i].position = glm::vec3(-3 + i - 11, -2.25f, 0);
     }
     
     for(int i = 21; i < 27; i++){//initiliaize all the platforms using for loop
-        state.platforms[i].entityType = PLATFORM;
-        state.platforms[i].textureID = platformTextureID;
         state.platforms[i].position = glm::vec3(i - 21, -1.25f, 0);
     }
     
-    for(int i = 27; i < 29; i++){//initiliaize all the platforms using for loop
-        state.platforms[i].entityType = PLATFORM;
-        state.platforms[i].textureID = platformTextureID;
+    state.platforms[22].position = glm::vec3(1, -1.75f, 0);
+    state.platforms[23].position = glm::vec3(2, -1.75f, 0);
+    state.platforms[24].position = glm::vec3(3, -1.75f, 0);
+    state.platforms[25].position = glm::vec3(4, -1.75f, 0);
+    
+    state.platforms[27].position = glm::vec3(0.5, -0.75f, 0);
+    state.platforms[28].position = glm::vec3(4.5, -0.75f, 0);
+    
+    for(int i = 29; i < 34; i++){//initiliaize all the platforms using for loop
+        state.platforms[i].position = glm::vec3(-5 + i - 29, 1.75f, 0);
     }
     
-    state.platforms[27].position = glm::vec3(0.5, -0.25f, 0);
-    state.platforms[28].position = glm::vec3(4.5, -0.25f, 0);
+    for(int i = 34; i < 38; i++){//initiliaize all the platforms using for loop
+        state.platforms[i].position = glm::vec3(2 + i - 35, 1.5f, 0);
+    }
+    
+    state.platforms[37].position = glm::vec3(5.0, 0.25f, 0);
+    
     
     for(size_t i = 0; i < PLATFORM_COUNT; i++){
-        //state.platforms[i].Update(0, NULL, NULL, 0);
         state.platforms[i].Update(0, NULL, NULL, 0, NULL, 0);
     }
     
@@ -160,9 +214,19 @@ void Initialize() {
     
     state.enemies[1].aiType = PATROLLER;
     state.enemies[1].aiState = PATROLLING;
-    state.enemies[1].position = glm::vec3(3.5, -0.25f, 0);
+    state.enemies[1].movement.x = -1;
+    state.enemies[1].position = glm::vec3(3.5f, -0.75f, 0);
     
- 
+    state.enemies[2].aiType = JUMPER;
+    state.enemies[2].aiState = JUMPING;
+    state.enemies[2].speed = 0;
+    state.enemies[2].position = glm::vec3(2, 2.5f, 0);
+    
+    state.destination = new Entity();
+    state.destination -> entityType = DESTINATION;
+    state.destination -> textureID = LoadTexture("platformPack_tile049.png");
+    state.destination -> position = glm::vec3(-4.5f, 2.75f, 0);
+    state.destination -> Update(0, NULL, NULL, 0, NULL, 0);
 }
 
 void ProcessInput() {
@@ -233,11 +297,9 @@ void Update() {
    
     while (deltaTime >= FIXED_TIMESTEP) {//tell player and enmeies to update
        // Update. Notice it's FIXED_TIMESTEP. Not deltaTime
-       //state.player->Update(FIXED_TIMESTEP, state.player, state.platforms, PLATFORM_COUNT);
         state.player->Update(FIXED_TIMESTEP, state.player, state.platforms, PLATFORM_COUNT, state.enemies, ENEMY_COUNT);
         
         for(int i = 0; i < ENEMY_COUNT; i++){
-            //state.enemies[i].Update(FIXED_TIMESTEP, state.player, state.platforms, PLATFORM_COUNT);
             state.enemies[i].Update(FIXED_TIMESTEP, state.player, state.platforms, PLATFORM_COUNT, state.enemies, ENEMY_COUNT);
         }
        
@@ -247,6 +309,7 @@ void Update() {
     accumulator = deltaTime;
 }
 
+int enemyOvercomed = 0;
 
 void Render() {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -259,7 +322,27 @@ void Render() {
         state.enemies[i].Render(&program);
     }
     
+    state.destination -> Render(&program);
+    
     state.player->Render(&program);
+    
+    if(state.player -> position.x <= -4.3f && state.player -> position.y >= 2.65f){
+        for(int i = 0; i < ENEMY_COUNT; i++){
+            if(state.enemies[i].isCounted == false && state.enemies[i].isActive == false){
+                state.enemies[i].isCounted = true; //avoid overcounting
+                enemyOvercomed++;
+            }
+        }
+        if(enemyOvercomed == ENEMY_COUNT){
+            DrawText(&program, fontTextureID, "You Win!", 0.5f, -0.25f, glm::vec3(-4.75f, 3.3, 0));
+        }else{
+            state.player -> speed = 0;
+            DrawText(&program, fontTextureID, "You Lose!", 0.5f, -0.25f, glm::vec3(-4.75f, 3.3, 0));
+        }
+    }else if(state.player -> collidedELeft || state.player -> collidedERight){
+        state.player -> speed = 0;
+        DrawText(&program, fontTextureID, "You Lose!", 0.5f, -0.25f, glm::vec3(-4.75f, 3.3, 0));
+    }
     
     SDL_GL_SwapWindow(displayWindow);
 }

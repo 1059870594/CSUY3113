@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF304865269BA49100CF8434 /* font1.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF304864269BA42A00CF8434 /* font1.png */; };
+		BF304867269BA84200CF8434 /* platformPack_tile049.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF304866269BA83900CF8434 /* platformPack_tile049.png */; };
 		BF9DCBD42682B96D00A7F42B /* platformPack_tile001.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF9DCBD32682B96500A7F42B /* platformPack_tile001.png */; };
 		BFEA08D0267133B40089000F /* ctg.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFEA08CF2671328E0089000F /* ctg.png */; };
 		BFEA08D2268104AA0089000F /* george_0.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFEA08D12681043E0089000F /* george_0.png */; };
@@ -29,6 +31,8 @@
 			dstSubfolderSpec = 6;
 			files = (
 				DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */,
+				BF304867269BA84200CF8434 /* platformPack_tile049.png in CopyFiles */,
+				BF304865269BA49100CF8434 /* font1.png in CopyFiles */,
 				BF9DCBD42682B96D00A7F42B /* platformPack_tile001.png in CopyFiles */,
 				BFEA08D2268104AA0089000F /* george_0.png in CopyFiles */,
 				BFEA08D0267133B40089000F /* ctg.png in CopyFiles */,
@@ -38,6 +42,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF304864269BA42A00CF8434 /* font1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = font1.png; sourceTree = "<group>"; };
+		BF304866269BA83900CF8434 /* platformPack_tile049.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile049.png; sourceTree = "<group>"; };
 		BF9DCBD32682B96500A7F42B /* platformPack_tile001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile001.png; sourceTree = "<group>"; };
 		BFEA08CF2671328E0089000F /* ctg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctg.png; sourceTree = "<group>"; };
 		BFEA08D12681043E0089000F /* george_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = george_0.png; sourceTree = "<group>"; };
@@ -93,6 +99,8 @@
 		DBDF1B512323DE3F007CECB1 /* SDLProject */ = {
 			isa = PBXGroup;
 			children = (
+				BF304866269BA83900CF8434 /* platformPack_tile049.png */,
+				BF304864269BA42A00CF8434 /* font1.png */,
 				BFEA08D12681043E0089000F /* george_0.png */,
 				BFEA08CF2671328E0089000F /* ctg.png */,
 				BF9DCBD32682B96500A7F42B /* platformPack_tile001.png */,
