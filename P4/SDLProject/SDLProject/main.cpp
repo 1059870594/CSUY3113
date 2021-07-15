@@ -137,12 +137,12 @@ void Initialize() {
     state.player->movement = glm::vec3(0);
     state.player->acceleration = glm::vec3(0,-9.81f,0);
     state.player->speed = 1.5f;
-    state.player->textureID = LoadTexture("george_0.png");
+    state.player->textureID = LoadTexture("newCharacter.png"); //credit to Revolvee
     
-    state.player->animRight = new int[4] {3, 7, 11, 15};
-    state.player->animLeft = new int[4] {1, 5, 9, 13};
-    state.player->animUp = new int[4] {2, 6, 10, 14};
-    state.player->animDown = new int[4] {0, 4, 8, 12};
+    state.player->animRight = new int[4] {8, 9, 10, 11};
+    state.player->animLeft = new int[4] {4, 5, 6, 7};
+    //state.player->animUp = new int[4] {2, 6, 10, 14};
+    //state.player->animDown = new int[4] {0, 4, 8, 12};
 
     state.player->animIndices = state.player->animRight;
     state.player->animFrames = 4;
@@ -156,7 +156,7 @@ void Initialize() {
     state.player->jumpPower = 6.0f;
     
     state.platforms = new Entity[PLATFORM_COUNT];
-    GLuint platformTextureID = LoadTexture("platformPack_tile001.png");
+    GLuint platformTextureID = LoadTexture("newTile.png"); //credit to Kenney
     
     for(int i = 0; i < PLATFORM_COUNT; i++){//initiliaize all the platforms using for loop
         state.platforms[i].entityType = PLATFORM;
@@ -199,7 +199,7 @@ void Initialize() {
     }
     
     state.enemies = new Entity[ENEMY_COUNT]; //initialize enemies
-    GLuint enemyTextureID = LoadTexture("ctg.png");
+    GLuint enemyTextureID = LoadTexture("zombie_idle.png"); //credit to Kenney
     
     
     for(int i = 0; i < ENEMY_COUNT; i++){
@@ -224,7 +224,7 @@ void Initialize() {
     
     state.destination = new Entity();
     state.destination -> entityType = DESTINATION;
-    state.destination -> textureID = LoadTexture("platformPack_tile049.png");
+    state.destination -> textureID = LoadTexture("laserBlueBurst.png"); //credit to Kenney
     state.destination -> position = glm::vec3(-4.5f, 2.75f, 0);
     state.destination -> Update(0, NULL, NULL, 0, NULL, 0);
 }
