@@ -2,7 +2,7 @@
 
 class Menu : public Scene {
 public:
-    void Initialize() override;
-    void Update(float deltaTime) override;
+    void Initialize(int& life) override;
+    void Update(float deltaTime, int& life) override;
     void Render(ShaderProgram *program) override;
 };

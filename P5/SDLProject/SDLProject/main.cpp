@@ -21,6 +21,7 @@
 #include "Menu.h"
 #include "Level1.h"
 #include "Level2.h"
+#include "Level3.h"
 
 SDL_Window* displayWindow;
 bool gameIsRunning = true;
@@ -30,11 +31,16 @@ glm::mat4 viewMatrix, modelMatrix, projectionMatrix;
 
 Scene *currentScene;
 //Scene *sceneList[2]; //two scenes
-Scene *sceneList[3];
+Scene *sceneList[4];
+
+GLuint fontTexture3ID;
+
+int life = 3;
 
 void SwitchToScene(Scene *scene) {
     currentScene = scene;
-    currentScene->Initialize();
+    //currentScene->Initialize();
+    currentScene->Initialize(life);
 }
 
 void Initialize() {
@@ -64,9 +70,12 @@ void Initialize() {
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
+    fontTexture3ID = Util::LoadTexture("font1.png");
+    
     sceneList[0] = new Menu();
     sceneList[1] = new Level1();
     sceneList[2] = new Level2();
+    sceneList[3] = new Level3();
     SwitchToScene(sceneList[0]); //switch to level1
 }
 
@@ -148,8 +157,8 @@ void Update() {
    
     while (deltaTime >= FIXED_TIMESTEP) {//tell player and enmeies to update
        // Update. Notice it's FIXED_TIMESTEP. Not deltaTime
-        currentScene->Update(FIXED_TIMESTEP);
-       
+        //currentScene->Update(FIXED_TIMESTEP);
+        currentScene->Update(FIXED_TIMESTEP, life);
         deltaTime -= FIXED_TIMESTEP;
     }
     
@@ -171,7 +180,6 @@ void Update() {
         
         if (currentScene->state.player->position.x >= 5 && currentScene->state.player->position.x <= 8) { //only move the camera if the player's position greater than 5 ; left boundary
             viewMatrix = glm::translate(viewMatrix, glm::vec3(-currentScene->state.player->position.x, 3.75, 0));
-            //std::cout << currentScene -> state.player->position.x << std::endl;
         } else if(currentScene->state.player->position.x < 5){
             viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 3.75, 0));
         } else if(currentScene->state.player->position.x > 8){
@@ -189,6 +197,14 @@ void Render() {
     program.SetViewMatrix(viewMatrix);
     
     currentScene->Render(&program);
+    
+    Util::DrawText(&program, fontTexture3ID, "lives: " + std::to_string(life), 0.5f, -0.25f, glm::vec3(8, -4.5f, 0));
+    if(life == 0){
+        Util::DrawText(&program, fontTexture3ID, "You lose", 0.5f, -0.25f, glm::vec3(8, -4.5f, 0));
+    }
+    if(currentScene == sceneList[3] && currentScene->state.player->position.x > 11.5  && fabs(currentScene->state.player->position.y + 3) <= 0.5f){
+        Util::DrawText(&program, fontTexture3ID, "You Win", 0.5f, -0.25f, glm::vec3(8, -4.5f, 0));
+    }
     
     SDL_GL_SwapWindow(displayWindow);
 }

@@ -20,12 +20,13 @@ struct GameState {
     Entity *player;
     Entity *enemies;
     int nextScene;
+    Entity *destination;
 };
 
 class Scene {
 public:
     GameState state;
-    virtual void Initialize() = 0;
-    virtual void Update(float deltaTime) = 0;
+    virtual void Initialize(int& life) = 0;
+    virtual void Update(float deltaTime, int& life) = 0;
     virtual void Render(ShaderProgram *program) = 0;
 };

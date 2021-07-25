@@ -2,7 +2,7 @@
 
 GLuint fontTextureID;
 
-void Menu::Initialize() {
+void Menu::Initialize(int& life) {
     
     state.nextScene = -1; //stays at this scene
     
@@ -11,7 +11,7 @@ void Menu::Initialize() {
     glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 }
 
-void Menu::Update(float deltaTime) {
+void Menu::Update(float deltaTime, int& life) {
     return;
 }
 

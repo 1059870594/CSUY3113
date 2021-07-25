@@ -1,28 +1,27 @@
-#include "Level2.h"
+#include "Level3.h"
 
-#define LEVEL2_WIDTH 14
-#define LEVEL2_HEIGHT 8
+#define LEVEL3_WIDTH 14
+#define LEVEL3_HEIGHT 8
 
-#define LEVEL2_ENEMY_COUNT 1
+#define LEVEL3_ENEMY_COUNT 1
 
-unsigned int level2_data[] =
+unsigned int level3_data[] =
 {
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
     3, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 3,
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
-    3, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3,
+    3, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 3,
+    3, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 1, 0, 3,
     3, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 3,
     3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3
 };
-
-void Level2::Initialize(int& life) {
+void Level3::Initialize(int& life) {
     
     state.nextScene = -1;
     
     GLuint mapTextureID = Util::LoadTexture("tileset.png");
-    state.map = new Map(LEVEL2_WIDTH, LEVEL2_HEIGHT, level2_data, mapTextureID, 1.0f, 4, 1);
+    state.map = new Map(LEVEL3_WIDTH, LEVEL3_HEIGHT, level3_data, mapTextureID, 1.0f, 4, 1);
     // Move over all of the player and enemy code from initialization.
     // Initialize Game Objects
     
@@ -51,17 +50,16 @@ void Level2::Initialize(int& life) {
     state.player->width = 0.6f;
     state.player->jumpPower = 6.0f;
     
-    state.enemies = new Entity[LEVEL2_ENEMY_COUNT]; //initialize enemies
+    state.enemies = new Entity[LEVEL3_ENEMY_COUNT]; //initialize enemies
     GLuint enemyTextureID = Util::LoadTexture("ctg.png");
     
     state.enemies[0].entityType = ENEMY;
-    state.enemies[0].aiType = PATROLLER;
-    state.enemies[0].aiState = PATROLLING;
+    state.enemies[0].aiType = JUMPER;
+    state.enemies[0].aiState = JUMPING;
     state.enemies[0].speed = 1;
-    state.enemies[0].movement = glm::vec3(-1,0,0);
     
     state.enemies[0].textureID = enemyTextureID;
-    state.enemies[0].position = glm::vec3(9, -5, 0);
+    state.enemies[0].position = glm::vec3(9, -3, 0);
     state.enemies[0].width = 0.8f;
     
     state.destination = new Entity();
@@ -71,18 +69,17 @@ void Level2::Initialize(int& life) {
     state.destination->position = glm::vec3(12, -3, 0);
 }
 
-void Level2::Update(float deltaTime, int& life) {
-    state.player->Update(deltaTime, state.player, state.enemies, LEVEL2_ENEMY_COUNT, state.map, life);
-    state.enemies[0].Update(deltaTime, state.player, state.enemies, LEVEL2_ENEMY_COUNT, state.map, life);
+void Level3::Update(float deltaTime, int& life) {
+    state.player->Update(deltaTime, state.player, state.enemies, LEVEL3_ENEMY_COUNT, state.map, life);
+    state.enemies[0].Update(deltaTime, state.player, state.enemies, LEVEL3_ENEMY_COUNT, state.map, life);
     state.destination->Update(deltaTime, NULL, NULL, 0, NULL, life);
-    //std::cout << "x: " << state.player->position.x << " ; y: " << state.player->position.y << std::endl;
-    if(state.player->position.x > 11.5  && state.player->position.y > -3.5) state.nextScene = 3;
 }
 
-void Level2::Render(ShaderProgram *program) {
+void Level3::Render(ShaderProgram *program) {
     state.map->Render(program);
     state.player->Render(program);
     state.enemies[0].Render(program);
     state.destination->Render(program);
 }
+
 

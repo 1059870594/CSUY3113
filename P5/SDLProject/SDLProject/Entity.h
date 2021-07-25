@@ -38,7 +38,6 @@ public:
     bool jump = false;
     float jumpPower = 0;
     float speed;
-    int life;
     
     
     GLuint textureID;
@@ -63,30 +62,24 @@ public:
     bool collidedLeft = false;
     bool collidedRight = false;
     
-    //new
+    /*
     bool collidedETop = false;
     bool collidedEBottom = false;
     bool collidedELeft = false;
     bool collidedERight = false;
     EntityType lastCollison;
-    
+    */
     Entity();
     
     bool CheckCollison(Entity *other);
-    void CheckCollisonsY(Entity *objects, int objectCount);
-    void CheckCollisonsX(Entity *objects, int objectCount);
+    void CheckCollisonsY(Entity *objects, int objectCount, int& life);
+    void CheckCollisonsX(Entity *objects, int objectCount, int& life);
     void CheckCollisionsX(Map *map); //check if colliding with map
     void CheckCollisionsY(Map *map);
     
-    void Update(float deltaTime, Entity* player, Entity* objects, int objectCount, Map *map);
+    void Update(float deltaTime, Entity* player, Entity* objects, int objectCount, Map *map, int& life);
     void Render(ShaderProgram *program);
     void DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID, int index);
-    
-    /*
-    void AI(Entity* player);
-    void AIWalker(); //handles ai walkers
-    void AIWaitAndGo(Entity* player);
-    */
     
     void AI(Entity* player, Map *map);
     void AIWalker(Entity* player);
