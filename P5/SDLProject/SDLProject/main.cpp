@@ -6,6 +6,7 @@
 
 #define GL_GLEXT_PROTOTYPES 1
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <SDL_opengl.h>
 #include "glm/mat4x4.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -29,11 +30,15 @@ bool gameIsRunning = true;
 ShaderProgram program;
 glm::mat4 viewMatrix, modelMatrix, projectionMatrix;
 
+Mix_Music *music;
+Mix_Chunk *bounce;
+
 Scene *currentScene;
 //Scene *sceneList[2]; //two scenes
 Scene *sceneList[4];
 
 GLuint fontTexture3ID;
+bool win;
 
 int life = 3;
 
@@ -44,8 +49,8 @@ void SwitchToScene(Scene *scene) {
 }
 
 void Initialize() {
-    SDL_Init(SDL_INIT_VIDEO);
-    displayWindow = SDL_CreateWindow("Textured!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    displayWindow = SDL_CreateWindow("Platformer!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
     
@@ -56,6 +61,15 @@ void Initialize() {
     glViewport(0, 0, 640, 480);
     
     program.Load("shaders/vertex_textured.glsl", "shaders/fragment_textured.glsl");
+    
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
+    music = Mix_LoadMUS("voxel-revolution-by-kevin-macleod-from-filmmusic-io.mp3");
+        //Voxel Revolution by Kevin MacLeod
+        //Link: https://incompetech.filmmusic.io/song/7017-voxel-revolution
+        //License: https://filmmusic.io/standard-license
+    Mix_PlayMusic(music, -1);
+    
+    bounce = Mix_LoadWAV("446100__justinvoke__bounce.wav"); //credit to justInvoke on Freesound
     
     viewMatrix = glm::mat4(1.0f);
     modelMatrix = glm::mat4(1.0f);
@@ -107,6 +121,7 @@ void ProcessInput() {
                         if(currentScene != sceneList[0]){
                             if(currentScene->state.player->collidedBottom){
                                 currentScene->state.player->jump = true;
+                                Mix_PlayChannel(-1, bounce, 0);
                             }
                         }
                         break;
@@ -157,7 +172,6 @@ void Update() {
    
     while (deltaTime >= FIXED_TIMESTEP) {//tell player and enmeies to update
        // Update. Notice it's FIXED_TIMESTEP. Not deltaTime
-        //currentScene->Update(FIXED_TIMESTEP);
         currentScene->Update(FIXED_TIMESTEP, life);
         deltaTime -= FIXED_TIMESTEP;
     }
@@ -167,15 +181,6 @@ void Update() {
     viewMatrix = glm::mat4(1.0f);
     
     if(currentScene != sceneList[0]){
-        
-        /*
-        if (currentScene->state.player->position.x > 5) { //only move the camera if the player's position greater than 5 ; left boundary
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(-currentScene->state.player->position.x, 3.75, 0));
-            std::cout << currentScene -> state.player->position.x << std::endl;
-        } else {
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 3.75, 0));
-        }
-         */
         
         
         if (currentScene->state.player->position.x >= 5 && currentScene->state.player->position.x <= 8) { //only move the camera if the player's position greater than 5 ; left boundary
@@ -198,13 +203,21 @@ void Render() {
     
     currentScene->Render(&program);
     
-    Util::DrawText(&program, fontTexture3ID, "lives: " + std::to_string(life), 0.5f, -0.25f, glm::vec3(8, -4.5f, 0));
+    Util::DrawText(&program, fontTexture3ID, "lives: " + std::to_string(life), 0.5f, -0.25f, glm::vec3(8, -0.5f, 0));
     if(life == 0){
-        Util::DrawText(&program, fontTexture3ID, "You lose", 0.5f, -0.25f, glm::vec3(8, -4.5f, 0));
+        currentScene->state.enemies[0].speed = 0;
+        currentScene->state.player->speed = 0;
+        Util::DrawText(&program, fontTexture3ID, "You lose", 0.5f, -0.25f, glm::vec3(8, -1.5f, 0));
     }
     if(currentScene == sceneList[3] && currentScene->state.player->position.x > 11.5  && fabs(currentScene->state.player->position.y + 3) <= 0.5f){
-        Util::DrawText(&program, fontTexture3ID, "You Win", 0.5f, -0.25f, glm::vec3(8, -4.5f, 0));
+        win = true;
     }
+    if(win){
+        currentScene->state.enemies[0].speed = 0;
+        currentScene->state.player->speed = 0;
+        Util::DrawText(&program, fontTexture3ID, "You Win", 0.5f, -0.25f, glm::vec3(8, -1.5f, 0));
+    }
+    
     
     SDL_GL_SwapWindow(displayWindow);
 }

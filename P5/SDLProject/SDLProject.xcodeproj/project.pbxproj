@@ -19,10 +19,17 @@
 		BF30488D26ACD40E00CF8434 /* Level3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF30488B26ACD40E00CF8434 /* Level3.cpp */; };
 		BF30488F26ACE3AE00CF8434 /* cakeSet.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF30488E26ACE38700CF8434 /* cakeSet.png */; };
 		BF30489126ACE73D00CF8434 /* cake2.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF30489026ACE73700CF8434 /* cake2.png */; };
+		BF30489326AD231800CF8434 /* voxel-revolution-by-kevin-macleod-from-filmmusic-io.mp3 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF30489226AD230500CF8434 /* voxel-revolution-by-kevin-macleod-from-filmmusic-io.mp3 */; };
+		BF30489526AD287000CF8434 /* 446100__justinvoke__bounce.wav in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF30489426AD286500CF8434 /* 446100__justinvoke__bounce.wav */; };
 		BF9DCBD42682B96D00A7F42B /* platformPack_tile001.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF9DCBD32682B96500A7F42B /* platformPack_tile001.png */; };
 		BFEA08D0267133B40089000F /* ctg.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFEA08CF2671328E0089000F /* ctg.png */; };
 		BFEA08D2268104AA0089000F /* george_0.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFEA08D12681043E0089000F /* george_0.png */; };
 		BFEA08D526819A220089000F /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFEA08D326819A220089000F /* Entity.cpp */; };
+		BFF51EEF26AE719B00C6A7BB /* cake.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFF51EEE26AE719500C6A7BB /* cake.png */; };
+		BFF51EF126AE72DD00C6A7BB /* choco.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFF51EF026AE72DA00C6A7BB /* choco.png */; };
+		BFF51EF326AE766900C6A7BB /* snow.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFF51EF226AE766600C6A7BB /* snow.png */; };
+		BFF51EF526AE7A5A00C6A7BB /* zombie.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFF51EF426AE7A4B00C6A7BB /* zombie.png */; };
+		BFF51EF726AE7BB500C6A7BB /* newCharacter.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = BFF51EF626AE7BAA00C6A7BB /* newCharacter.png */; };
 		DBDF1B532323DE3F007CECB1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBDF1B522323DE3F007CECB1 /* main.cpp */; };
 		DBDF1B5E2323DE8D007CECB1 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */; };
 		DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */ = {isa = PBXBuildFile; fileRef = DBDF1B5C2323DE8D007CECB1 /* shaders */; };
@@ -41,6 +48,13 @@
 			dstSubfolderSpec = 6;
 			files = (
 				DBDF1B612323DE9E007CECB1 /* shaders in CopyFiles */,
+				BFF51EF726AE7BB500C6A7BB /* newCharacter.png in CopyFiles */,
+				BFF51EF526AE7A5A00C6A7BB /* zombie.png in CopyFiles */,
+				BFF51EF326AE766900C6A7BB /* snow.png in CopyFiles */,
+				BFF51EF126AE72DD00C6A7BB /* choco.png in CopyFiles */,
+				BFF51EEF26AE719B00C6A7BB /* cake.png in CopyFiles */,
+				BF30489526AD287000CF8434 /* 446100__justinvoke__bounce.wav in CopyFiles */,
+				BF30489326AD231800CF8434 /* voxel-revolution-by-kevin-macleod-from-filmmusic-io.mp3 in CopyFiles */,
 				BF30489126ACE73D00CF8434 /* cake2.png in CopyFiles */,
 				BF30488F26ACE3AE00CF8434 /* cakeSet.png in CopyFiles */,
 				BF30488A26AB7EEC00CF8434 /* targetOne.png in CopyFiles */,
@@ -74,11 +88,18 @@
 		BF30488C26ACD40E00CF8434 /* Level3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Level3.h; sourceTree = "<group>"; };
 		BF30488E26ACE38700CF8434 /* cakeSet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cakeSet.png; sourceTree = "<group>"; };
 		BF30489026ACE73700CF8434 /* cake2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cake2.png; sourceTree = "<group>"; };
+		BF30489226AD230500CF8434 /* voxel-revolution-by-kevin-macleod-from-filmmusic-io.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "voxel-revolution-by-kevin-macleod-from-filmmusic-io.mp3"; sourceTree = "<group>"; };
+		BF30489426AD286500CF8434 /* 446100__justinvoke__bounce.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 446100__justinvoke__bounce.wav; sourceTree = "<group>"; };
 		BF9DCBD32682B96500A7F42B /* platformPack_tile001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = platformPack_tile001.png; sourceTree = "<group>"; };
 		BFEA08CF2671328E0089000F /* ctg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ctg.png; sourceTree = "<group>"; };
 		BFEA08D12681043E0089000F /* george_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = george_0.png; sourceTree = "<group>"; };
 		BFEA08D326819A220089000F /* Entity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
 		BFEA08D426819A220089000F /* Entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		BFF51EEE26AE719500C6A7BB /* cake.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cake.png; sourceTree = "<group>"; };
+		BFF51EF026AE72DA00C6A7BB /* choco.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = choco.png; sourceTree = "<group>"; };
+		BFF51EF226AE766600C6A7BB /* snow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snow.png; sourceTree = "<group>"; };
+		BFF51EF426AE7A4B00C6A7BB /* zombie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zombie.png; sourceTree = "<group>"; };
+		BFF51EF626AE7BAA00C6A7BB /* newCharacter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newCharacter.png; sourceTree = "<group>"; };
 		DBDF1B4F2323DE3F007CECB1 /* SDLProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SDLProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBDF1B522323DE3F007CECB1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DBDF1B592323DE8D007CECB1 /* ShaderProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShaderProgram.h; sourceTree = "<group>"; };
@@ -129,7 +150,14 @@
 		DBDF1B512323DE3F007CECB1 /* SDLProject */ = {
 			isa = PBXGroup;
 			children = (
+				BF30489226AD230500CF8434 /* voxel-revolution-by-kevin-macleod-from-filmmusic-io.mp3 */,
+				BF30489426AD286500CF8434 /* 446100__justinvoke__bounce.wav */,
+				BFF51EF426AE7A4B00C6A7BB /* zombie.png */,
+				BFF51EF626AE7BAA00C6A7BB /* newCharacter.png */,
+				BFF51EF226AE766600C6A7BB /* snow.png */,
+				BFF51EEE26AE719500C6A7BB /* cake.png */,
 				BF30489026ACE73700CF8434 /* cake2.png */,
+				BFF51EF026AE72DA00C6A7BB /* choco.png */,
 				BF30488E26ACE38700CF8434 /* cakeSet.png */,
 				BF30487026A7844500CF8434 /* tileset.png */,
 				BFEA08D12681043E0089000F /* george_0.png */,

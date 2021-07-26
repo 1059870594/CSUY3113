@@ -23,14 +23,14 @@ unsigned int level1_data[] =
 
 unsigned int level1_data[] =
 {
-    11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    11, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1,
-    11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    11, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-    2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1,
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8,
+    2, 0, 0, 0, 23, 23, 0, 0, 0, 0, 0, 0, 0, 8,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8,
+    2, 0, 0, 0, 0, 0, 0, 0, 0, 29, 22, 22, 22, 20,
+    14, 22, 22, 22, 22, 22, 22, 22, 22, 20, 30, 30, 30, 1,
+    12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12
 };
 
 
@@ -40,8 +40,8 @@ void Level1::Initialize(int& life) {
     
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     
-    GLuint mapTextureID = Util::LoadTexture("cakeSet.png");
-    state.map = new Map(LEVEL1_WIDTH, LEVEL1_HEIGHT, level1_data, mapTextureID, 1.0f, 7, 7);
+    GLuint mapTextureID = Util::LoadTexture("cake.png");
+    state.map = new Map(LEVEL1_WIDTH, LEVEL1_HEIGHT, level1_data, mapTextureID, 1.0f, 6, 7);
     // Move over all of the player and enemy code from initialization.
     // Initialize Game Objects
     
@@ -52,10 +52,10 @@ void Level1::Initialize(int& life) {
     state.player->movement = glm::vec3(0);
     state.player->acceleration = glm::vec3(0,-9.81f,0);
     state.player->speed = 2.0f;
-    state.player->textureID = Util::LoadTexture("george_0.png");
+    state.player->textureID = Util::LoadTexture("newCharacter.png");
     
-    state.player->animRight = new int[4] {3, 7, 11, 15};
-    state.player->animLeft = new int[4] {1, 5, 9, 13};
+    state.player->animRight = new int[4] {8, 9, 10, 11};
+    state.player->animLeft = new int[4] {4, 5, 6, 7};
     state.player->animUp = new int[4] {2, 6, 10, 14};
     state.player->animDown = new int[4] {0, 4, 8, 12};
 
@@ -71,7 +71,7 @@ void Level1::Initialize(int& life) {
     state.player->jumpPower = 6.0f;
     
     state.enemies = new Entity[LEVEL1_ENEMY_COUNT]; //initialize enemies
-    GLuint enemyTextureID = Util::LoadTexture("ctg.png");
+    GLuint enemyTextureID = Util::LoadTexture("zombie.png");
     
     state.enemies[0].entityType = ENEMY;
     state.enemies[0].aiType = WALKER;

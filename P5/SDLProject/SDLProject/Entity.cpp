@@ -148,7 +148,7 @@ void Entity::AIWalker(Entity* player){
     }
 }
 
-void Entity::AIPatroller(Entity *player, Map *map){
+void Entity::AIPatroller(){
     if(position.x  >= 10){
         movement = glm::vec3(-1, 0, 0);
     }else if(position.x <= 8){
@@ -156,26 +156,26 @@ void Entity::AIPatroller(Entity *player, Map *map){
     }
 }
 
-void Entity::AIJumper(Entity *player){
-    if(position.y >= -2){
+void Entity::AIJumper(){
+    if(position.y >= -1.5){
         velocity.y = -0.5f;
     }else if(position.y <= -3){
         velocity.y = 0.5f;
     }
 }
 
-void Entity::AI(Entity* player, Map *map){
+void Entity::AI(Entity* player){
     switch(aiType){ //call different types actions
         case WALKER:
             AIWalker(player);
             break;
         
         case PATROLLER:
-            AIPatroller(player, map);
+            AIPatroller();
             break;
             
         case JUMPER:
-            AIJumper(player);
+            AIJumper();
             break;
     }
 }
@@ -190,7 +190,7 @@ void Entity::Update(float deltaTime, Entity* player, Entity* objects, int object
     collidedRight = false;
     
     if(entityType == ENEMY){ //if its an enemy, use AI to process
-        AI(player, map);
+        AI(player);
     }
     
     if (animIndices != NULL) {

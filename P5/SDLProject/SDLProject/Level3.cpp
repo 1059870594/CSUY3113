@@ -5,7 +5,7 @@
 
 #define LEVEL3_ENEMY_COUNT 1
 
-unsigned int level3_data[] =
+unsigned int level4_data[] =
 {
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
@@ -16,12 +16,26 @@ unsigned int level3_data[] =
     3, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 3,
     3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3
 };
+
+unsigned int level3_data[] =
+{
+    13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13,
+    13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13,
+    13, 0, 0, 0, 24, 12, 0, 0, 0, 0, 0, 0, 0, 13,
+    13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13,
+    13, 0, 0, 0, 0, 0, 0, 0, 24, 18, 12, 0, 0, 13,
+    13, 0, 0, 0, 0, 0, 0, 24, 18, 18, 18, 12, 0, 13,
+    13, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 13,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+};
+
+
 void Level3::Initialize(int& life) {
     
     state.nextScene = -1;
     
-    GLuint mapTextureID = Util::LoadTexture("tileset.png");
-    state.map = new Map(LEVEL3_WIDTH, LEVEL3_HEIGHT, level3_data, mapTextureID, 1.0f, 4, 1);
+    GLuint mapTextureID = Util::LoadTexture("snow.png");
+    state.map = new Map(LEVEL3_WIDTH, LEVEL3_HEIGHT, level3_data, mapTextureID, 1.0f, 6, 7);
     // Move over all of the player and enemy code from initialization.
     // Initialize Game Objects
     
@@ -32,10 +46,10 @@ void Level3::Initialize(int& life) {
     state.player->movement = glm::vec3(0);
     state.player->acceleration = glm::vec3(0,-9.81f,0);
     state.player->speed = 2.0f;
-    state.player->textureID = Util::LoadTexture("george_0.png");
+    state.player->textureID = Util::LoadTexture("newCharacter.png");
     
-    state.player->animRight = new int[4] {3, 7, 11, 15};
-    state.player->animLeft = new int[4] {1, 5, 9, 13};
+    state.player->animRight = new int[4] {8, 9, 10, 11};
+    state.player->animLeft = new int[4] {4, 5, 6, 7};
     state.player->animUp = new int[4] {2, 6, 10, 14};
     state.player->animDown = new int[4] {0, 4, 8, 12};
 
@@ -51,7 +65,7 @@ void Level3::Initialize(int& life) {
     state.player->jumpPower = 6.0f;
     
     state.enemies = new Entity[LEVEL3_ENEMY_COUNT]; //initialize enemies
-    GLuint enemyTextureID = Util::LoadTexture("ctg.png");
+    GLuint enemyTextureID = Util::LoadTexture("zombie.png");
     
     state.enemies[0].entityType = ENEMY;
     state.enemies[0].aiType = JUMPER;

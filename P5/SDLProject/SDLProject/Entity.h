@@ -62,13 +62,6 @@ public:
     bool collidedLeft = false;
     bool collidedRight = false;
     
-    /*
-    bool collidedETop = false;
-    bool collidedEBottom = false;
-    bool collidedELeft = false;
-    bool collidedERight = false;
-    EntityType lastCollison;
-    */
     Entity();
     
     bool CheckCollison(Entity *other);
@@ -81,8 +74,8 @@ public:
     void Render(ShaderProgram *program);
     void DrawSpriteFromTextureAtlas(ShaderProgram *program, GLuint textureID, int index);
     
-    void AI(Entity* player, Map *map);
+    void AI(Entity* player);
     void AIWalker(Entity* player);
-    void AIPatroller(Entity* player, Map *map);
-    void AIJumper(Entity* player);
+    void AIPatroller();
+    void AIJumper();
 };
