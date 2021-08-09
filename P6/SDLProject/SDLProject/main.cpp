@@ -34,23 +34,22 @@ Mix_Music *music;
 Mix_Chunk *bounce;
 
 Scene *currentScene;
-//Scene *sceneList[2]; //two scenes
 Scene *sceneList[4];
 
 GLuint fontTexture3ID;
 bool win;
+glm::vec3 textPosition;
 
 int life = 3;
 
 void SwitchToScene(Scene *scene) {
     currentScene = scene;
-    //currentScene->Initialize();
     currentScene->Initialize(life);
 }
 
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    displayWindow = SDL_CreateWindow("Platformer!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+    displayWindow = SDL_CreateWindow("Maze Adventure!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
     
@@ -60,7 +59,8 @@ void Initialize() {
     
     glViewport(0, 0, 640, 480);
     
-    program.Load("shaders/vertex_textured.glsl", "shaders/fragment_textured.glsl");
+    //program.Load("shaders/vertex_textured.glsl", "shaders/fragment_textured.glsl");
+    program.Load("shaders/vertex_lit.glsl", "shaders/fragment_lit.glsl");
     
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
     music = Mix_LoadMUS("voxel-revolution-by-kevin-macleod-from-filmmusic-io.mp3");
@@ -118,12 +118,6 @@ void ProcessInput() {
                         break;
                         
                     case SDLK_SPACE:
-                        if(currentScene != sceneList[0]){
-                            if(currentScene->state.player->collidedBottom){
-                                currentScene->state.player->jump = true;
-                                Mix_PlayChannel(-1, bounce, 0);
-                            }
-                        }
                         break;
                         
                     case SDLK_RETURN:
@@ -150,11 +144,11 @@ void ProcessInput() {
         
         if (keys[SDL_SCANCODE_UP]) {
             currentScene->state.player->movement.y = 1.0f;
-            currentScene->state.player->animIndices = currentScene->state.player->animLeft;
+            currentScene->state.player->animIndices = currentScene->state.player->animUp;
         }
         else if (keys[SDL_SCANCODE_DOWN]) {
             currentScene->state.player->movement.y = -1.0f;
-            currentScene->state.player->animIndices = currentScene->state.player->animRight;
+            currentScene->state.player->animIndices = currentScene->state.player->animDown;
         }
         
         if (glm::length(currentScene->state.player->movement) > 1.0f) {
@@ -182,6 +176,7 @@ void Update() {
     while (deltaTime >= FIXED_TIMESTEP) {//tell player and enmeies to update
        // Update. Notice it's FIXED_TIMESTEP. Not deltaTime
         currentScene->Update(FIXED_TIMESTEP, life);
+        if(currentScene != sceneList[0]) program.SetLightPosition(currentScene->state.player->position);
         deltaTime -= FIXED_TIMESTEP;
     }
     
@@ -190,30 +185,12 @@ void Update() {
     viewMatrix = glm::mat4(1.0f);
     
     if(currentScene != sceneList[0]){
-        
-        std::cout << "x: " <<currentScene->state.player->position.x << std::endl;
-        std::cout << "y: " <<currentScene->state.player->position.y << std::endl;
-        
-        if (currentScene->state.player->position.x >= 5 && currentScene->state.player->position.x <= 8) { //only move the camera if the player's position greater than 5 ; left boundary
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(-currentScene->state.player->position.x, 3.75, 0));
-        } else if(currentScene->state.player->position.x < 5){
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 3.75, 0));
-        } else if(currentScene->state.player->position.x > 8){
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(-8, 3.75, 0));
-        }
-
-        if (currentScene->state.player->position.y >= -9.5 && currentScene->state.player->position.y <= -7.5) { //only move the camera if the player's position greater than 5 ; left boundary
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(0, -currentScene->state.player->position.y, 0));
-        } else if(currentScene->state.player->position.y < -9.5){
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(0, 9.5, 0));
-        } else if(currentScene->state.player->position.y > -7.5){
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(0, 7.5, 0));
-        }
-
-        
-
-        
-        
+        viewMatrix = glm::translate(viewMatrix, glm::vec3(-currentScene->state.player->position.x, -currentScene->state.player->position.y, 0));
+   
+    }
+    
+    if(currentScene != sceneList[0] && currentScene->state.player->keySound){
+        Mix_PlayChannel(-1, bounce, 0);
     }
 }
 
@@ -225,19 +202,27 @@ void Render() {
     
     currentScene->Render(&program);
     
-    Util::DrawText(&program, fontTexture3ID, "lives: " + std::to_string(life), 0.5f, -0.25f, glm::vec3(8, -0.5f, 0));
+    if(currentScene != sceneList[0]){
+        textPosition.x = currentScene->state.player->position.x - 4.6f;
+        textPosition.y = currentScene->state.player->position.y + 3.4f;
+        textPosition.z = 0;
+        Util::DrawText(&program, fontTexture3ID, "lives: " + std::to_string(life), 0.5f, -0.25f, textPosition);
+    }
+
     if(life == 0){
         currentScene->state.enemies[0].speed = 0;
         currentScene->state.player->speed = 0;
-        Util::DrawText(&program, fontTexture3ID, "You lose", 0.5f, -0.25f, glm::vec3(8, -1.5f, 0));
+        Util::DrawText(&program, fontTexture3ID, "You lose", 0.5f, -0.25f, glm::vec3(textPosition.x, textPosition.y - 0.5, 0));
     }
-    if(currentScene == sceneList[3] && currentScene->state.player->position.x > 11.5  && fabs(currentScene->state.player->position.y + 3) <= 0.5f){
+
+    if(currentScene == sceneList[3] && currentScene->state.player->position.x > 13.9 && currentScene->state.player->position.y <= -5.9 && currentScene->state.player->collidedKey){
         win = true;
     }
+    
     if(win){
         currentScene->state.enemies[0].speed = 0;
         currentScene->state.player->speed = 0;
-        Util::DrawText(&program, fontTexture3ID, "You Win", 0.5f, -0.25f, glm::vec3(8, -1.5f, 0));
+        Util::DrawText(&program, fontTexture3ID, "You Win", 0.5f, -0.25f, glm::vec3(textPosition.x, textPosition.y - 0.5, 0));
     }
     
     

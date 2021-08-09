@@ -21,6 +21,7 @@ struct GameState {
     Entity *enemies;
     int nextScene;
     Entity *destination;
+    Entity *keys;
 };
 
 class Scene {
